@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 def kill_port(port=5002):
-    """Auto-kill any process using the given port."""
+    """Auto-kill any process using the given port (local dev only)."""
     try:
         result = subprocess.run(
             ['lsof', '-ti', f':{port}'],
@@ -22,7 +22,7 @@ def kill_port(port=5002):
                 os.kill(int(pid), signal.SIGKILL)
                 print(f"✓ Killed process {pid} on port {port}")
     except Exception:
-        pass  # No process on port, nothing to kill
+        pass  # No process on port or not on Mac/Linux
 
 
 # External Libraries
@@ -461,20 +461,23 @@ def get_analytics_api():
         })
 
 
-# --- Application Runner ---
+# --- Application Initialization (runs for both gunicorn and direct execution) ---
 
-if __name__ == '__main__':
-    # 1. Run Setup Pipeline (creates DB, model, and scaler) if needed
+def initialize_app():
+    """Initialize the application: run setup pipeline if needed and load model."""
     if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
         print("Model or Scaler not found. Running setup pipeline...")
         run_setup_pipeline()
-    
-    # 2. Load the trained model and scaler
     load_model_and_scaler()
 
-    # 3. Start Flask App
-    current_port = int(os.environ.get("FLASK_RUN_PORT", 5002))  # Changed default to 5002 to avoid port conflict
-    kill_port(current_port)  # Auto-kill any process on the port
+# Initialize on import (needed for gunicorn)
+initialize_app()
+
+# --- Local Development Runner ---
+
+if __name__ == '__main__':
+    current_port = int(os.environ.get("FLASK_RUN_PORT", 5002))
+    kill_port(current_port)
     print(f"\n🚀 Starting CropWise AI...")
     print(f"📱 Open http://127.0.0.1:{current_port}/ in your browser")
-    app.run(debug=True, host='0.0.0.0', port=current_port, use_reloader=False) # use_reloader=False prevents double training on startup
+    app.run(debug=True, host='0.0.0.0', port=current_port, use_reloader=False)
