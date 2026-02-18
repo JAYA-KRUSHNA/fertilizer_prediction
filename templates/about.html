@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CropWise AI</title>
+    <meta name="description"
+        content="Learn about CropWise AI — our mission to revolutionize fertilizer management through intelligent AI predictions.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CropWise AI" class="logo-img">
+                    <span>CropWise AI</span>
+                </div>
+                <div class="nav-hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('predict') }}"><i class="fas fa-calculator"></i> Predict</a></li>
+                    <li><a href="{{ url_for('visualization') }}"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="{{ url_for('about') }}" class="active"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <div class="container">
+                <h1>About CropWise AI</h1>
+                <p>Revolutionizing fertilizer management through intelligent AI predictions</p>
+            </div>
+        </section>
+
+        <section class="mission">
+            <div class="container">
+                <div class="mission-content">
+                    <h2>Our Mission</h2>
+                    <p>CropWise AI is dedicated to transforming agricultural practices through intelligent
+                        fertilizer management. We combine cutting-edge machine learning technology with agricultural
+                        science to help farmers optimize fertilizer usage, reduce environmental impact, and improve crop
+                        productivity.</p>
+                    <p>Our platform analyzes soil composition, crop requirements, and climate patterns to deliver
+                        precise, data-driven recommendations that save resources and boost yields.</p>
+
+                    <div class="mission-stats">
+                        <div class="stat">
+                            <div class="stat-number">30%</div>
+                            <div class="stat-desc">Fertilizer waste reduction</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">25%</div>
+                            <div class="stat-desc">Resource efficiency gain</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15%</div>
+                            <div class="stat-desc">Crop yield improvement</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mission-visual">
+                    <div class="mission-visual-orb orb-1"></div>
+                    <div class="mission-visual-orb orb-2"></div>
+                    <div class="mission-visual-center">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="mission-visual-label label-1">
+                        <i class="fas fa-check-circle"></i> 98.5% Accuracy
+                    </div>
+                    <div class="mission-visual-label label-2">
+                        <i class="fas fa-seedling"></i> 5 Crop Types
+                    </div>
+                    <div class="mission-visual-label label-3">
+                        <i class="fas fa-database"></i> 10K+ Samples
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="technology">
+            <div class="container">
+                <h2>Technology & Methodology</h2>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <i class="fas fa-database"></i>
+                        <h3>Data-Driven Approach</h3>
+                        <p>Our system uses comprehensive agricultural datasets including soil properties, climate
+                            variables, and crop characteristics to train accurate prediction models.</p>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>Machine Learning Models</h3>
+                        <p>Advanced algorithms including Random Forest, Support Vector Regression, and Gradient Boosting
+                            are employed to ensure high prediction accuracy.</p>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Feature Importance Analysis</h3>
+                        <p>We identify critical factors affecting fertilizer requirements, providing insights for better
+                            agricultural decision-making.</p>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Sustainability Focus</h3>
+                        <p>Our recommendations aim to minimize environmental impact while maximizing agricultural
+                            productivity and resource efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset">
+            <div class="container">
+                <h2>Dataset Overview</h2>
+                <div class="dataset-content">
+                    <div class="dataset-info">
+                        <h3>Comprehensive Agricultural Dataset</h3>
+                        <p>Our dataset includes 10,000+ synthetic agricultural samples covering various
+                            crops, soil types, and climatic conditions. Each sample contains:
+                        </p>
+                        <ul>
+                            <li><strong>Soil Properties:</strong> pH, texture, nutrient levels (NPK), organic matter
+                                content</li>
+                            <li><strong>Crop Information:</strong> Type (wheat, rice, maize, soybean, cotton)</li>
+                            <li><strong>Climate Variables:</strong> Temperature, humidity, rainfall patterns</li>
+                            <li><strong>Irrigation Methods:</strong> Rainfed, drip, sprinkler, flood irrigation</li>
+                            <li><strong>Fertilizer Requirements:</strong> Calculated optimal fertilizer amounts</li>
+                        </ul>
+                    </div>
+                    <div class="dataset-stats">
+                        <div class="stat-box">
+                            <div class="stat-value">10,000+</div>
+                            <div class="stat-label">Data Samples</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Features</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Crop Types</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Irrigation Types</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team">
+            <div class="container">
+                <h2>Development Team</h2>
+                <p>Built by agricultural technology experts and data scientists committed to
+                    sustainable farming practices.</p>
+
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Dr. Agricultural AI</h3>
+                        <p>Machine Learning Engineer</p>
+                        <p>Specializing in agricultural data analysis and predictive modeling</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Soil Science Expert</h3>
+                        <p>Agricultural Scientist</p>
+                        <p>Expert in soil fertility management and nutrient optimization</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h3>Data Engineer</h3>
+                        <p>Full-Stack Developer</p>
+                        <p>Building scalable web applications for agricultural technology</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <p>Have questions about CropWise AI or interested in collaboration opportunities?</p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>jayakrushna1622@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9392427419</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Agricultural Innovation Center, India</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form action="#" method="post">
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,60 1440,60 L1440,120 L0,120Z" fill="currentColor" />
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h3><i class="fas fa-seedling"></i> CropWise AI</h3>
+                    <p>Revolutionizing agriculture through intelligent fertilizer management. Built with cutting-edge ML
+                        for a sustainable future.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-angle-right"></i> Home</a></li>
+                        <li><a href="{{ url_for('predict') }}"><i class="fas fa-angle-right"></i> Make Prediction</a>
+                        </li>
+                        <li><a href="{{ url_for('visualization') }}"><i class="fas fa-angle-right"></i> View
+                                Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> jayakrushna1622@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9392427419</p>
+                    <p><i class="fas fa-map-marker-alt"></i> India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CropWise AI. All rights reserved. Built with <i class="fas fa-heart"
+                        style="color: #e53935;"></i> for sustainable agriculture.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

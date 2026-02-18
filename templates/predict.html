@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict - CropWise AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CropWise AI" class="logo-img">
+                    <span>CropWise AI</span>
+                </div>
+                <div class="nav-hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('predict') }}" class="active"><i class="fas fa-calculator"></i> Predict</a>
+                    </li>
+                    <li><a href="{{ url_for('visualization') }}"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="predict-hero">
+            <div class="container">
+                <div class="predict-hero-badge"><i class="fas fa-brain"></i> AI-POWERED PREDICTION</div>
+                <h1>Fertilizer Requirement Prediction</h1>
+                <p>Enter your field parameters and let our machine learning model calculate the optimal fertilizer
+                    dosage</p>
+            </div>
+            <!-- Decorative floating particles -->
+            <div class="predict-hero-deco deco-1"></div>
+            <div class="predict-hero-deco deco-2"></div>
+            <div class="predict-hero-deco deco-3"></div>
+        </section>
+
+        <section class="prediction-form-section">
+            <div class="container">
+                <!-- Progress Steps -->
+                <div class="form-steps">
+                    <div class="form-step active" data-step="1">
+                        <div class="step-icon"><i class="fas fa-flask"></i></div>
+                        <span>Soil</span>
+                    </div>
+                    <div class="step-connector active"></div>
+                    <div class="form-step" data-step="2">
+                        <div class="step-icon"><i class="fas fa-seedling"></i></div>
+                        <span>Crop</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="form-step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-cloud-sun"></i></div>
+                        <span>Climate</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="form-step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                        <span>Result</span>
+                    </div>
+                </div>
+
+                <div class="predict-layout">
+                    <!-- Main Form Card -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <div class="form-card-title">
+                                <h2><i class="fas fa-clipboard-list"></i> Field Parameters</h2>
+                                <p>Fill in the details about your soil, crop, and environmental conditions</p>
+                            </div>
+                            <button id="demo-data" class="demo-btn-premium">
+                                <i class="fas fa-magic"></i> Auto-Fill Demo
+                            </button>
+                        </div>
+
+                        <form id="predict-form" method="post">
+                            <!-- Soil Properties -->
+                            <div class="form-section-card">
+                                <div class="section-label">
+                                    <div class="section-label-icon"><i class="fas fa-flask"></i></div>
+                                    <div>
+                                        <h3>Soil Properties</h3>
+                                        <p>Enter your soil test results</p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group-premium">
+                                        <label for="soil_ph">
+                                            <i class="fas fa-tint"></i> Soil pH
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="soil_ph" name="soil_ph" step="0.1" min="4.0"
+                                                max="9.0" placeholder="e.g. 6.5" required>
+                                            <span class="input-unit">pH</span>
+                                        </div>
+                                        <small>Range: 4.0 – 9.0</small>
+                                    </div>
+                                    <div class="form-group-premium">
+                                        <label for="soil_texture">
+                                            <i class="fas fa-layer-group"></i> Soil Texture
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <select id="soil_texture" name="soil_texture" required>
+                                                <option value="">Select texture</option>
+                                                <option value="Sandy">Sandy</option>
+                                                <option value="Loamy">Loamy</option>
+                                                <option value="Clay">Clay</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group-premium">
+                                        <label for="nitrogen">
+                                            <i class="fas fa-atom"></i> Nitrogen
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="nitrogen" name="nitrogen" step="0.1" min="0"
+                                                max="200" placeholder="e.g. 50" required>
+                                            <span class="input-unit">kg/ha</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-premium">
+                                        <label for="phosphorus">
+                                            <i class="fas fa-atom"></i> Phosphorus
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="phosphorus" name="phosphorus" step="0.1" min="0"
+                                                max="150" placeholder="e.g. 30" required>
+                                            <span class="input-unit">kg/ha</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group-premium">
+                                        <label for="potassium">
+                                            <i class="fas fa-atom"></i> Potassium
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="potassium" name="potassium" step="0.1" min="0"
+                                                max="200" placeholder="e.g. 40" required>
+                                            <span class="input-unit">kg/ha</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-premium">
+                                        <label for="organic_matter">
+                                            <i class="fas fa-leaf"></i> Organic Matter
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="organic_matter" name="organic_matter" step="0.1"
+                                                min="0" max="10" placeholder="e.g. 3.5" required>
+                                            <span class="input-unit">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Crop Information -->
+                            <div class="form-section-card">
+                                <div class="section-label">
+                                    <div class="section-label-icon crop"><i class="fas fa-seedling"></i></div>
+                                    <div>
+                                        <h3>Crop Information</h3>
+                                        <p>Select your crop and irrigation details</p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group-premium">
+                                        <label for="crop_type">
+                                            <i class="fas fa-seedling"></i> Crop Type
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <select id="crop_type" name="crop_type" required>
+                                                <option value="">Select crop</option>
+                                                <option value="Wheat">🌾 Wheat</option>
+                                                <option value="Rice">🌾 Rice</option>
+                                                <option value="Maize">🌽 Maize</option>
+                                                <option value="Soybean">🫘 Soybean</option>
+                                                <option value="Cotton">🏵️ Cotton</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-premium">
+                                        <label for="irrigation_type">
+                                            <i class="fas fa-water"></i> Irrigation Type
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <select id="irrigation_type" name="irrigation_type" required>
+                                                <option value="">Select irrigation</option>
+                                                <option value="Rainfed">🌧️ Rainfed</option>
+                                                <option value="Drip">💧 Drip Irrigation</option>
+                                                <option value="Sprinkler">🚿 Sprinkler</option>
+                                                <option value="Flood">🌊 Flood Irrigation</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Climate Conditions -->
+                            <div class="form-section-card">
+                                <div class="section-label">
+                                    <div class="section-label-icon climate"><i class="fas fa-cloud-sun"></i></div>
+                                    <div>
+                                        <h3>Climate Conditions</h3>
+                                        <p>Provide current environmental data</p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group-premium">
+                                        <label for="temperature">
+                                            <i class="fas fa-thermometer-half"></i> Temperature
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="temperature" name="temperature" step="0.1" min="10"
+                                                max="40" placeholder="e.g. 25" required>
+                                            <span class="input-unit">°C</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-premium">
+                                        <label for="humidity">
+                                            <i class="fas fa-tint"></i> Humidity
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="humidity" name="humidity" step="0.1" min="20"
+                                                max="90" placeholder="e.g. 65" required>
+                                            <span class="input-unit">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group-premium full-width">
+                                        <label for="rainfall">
+                                            <i class="fas fa-cloud-rain"></i> Annual Rainfall
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="rainfall" name="rainfall" step="1" min="200"
+                                                max="2000" placeholder="e.g. 800" required>
+                                            <span class="input-unit">mm</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions-premium">
+                                <button type="submit" class="btn-predict">
+                                    <span class="btn-predict-icon"><i class="fas fa-calculator"></i></span>
+                                    <span>Calculate Fertilizer Requirement</span>
+                                    <span class="btn-predict-arrow"><i class="fas fa-arrow-right"></i></span>
+                                </button>
+                                <button type="reset" class="btn-reset">
+                                    <i class="fas fa-undo"></i> Reset All Fields
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Side Info Panel -->
+                    <div class="predict-sidebar">
+                        <div class="sidebar-card how-it-works">
+                            <div class="sidebar-card-icon"><i class="fas fa-cogs"></i></div>
+                            <h4>How It Works</h4>
+                            <div class="steps-mini">
+                                <div class="step-mini">
+                                    <div class="step-mini-num">1</div>
+                                    <p>Enter your field parameters</p>
+                                </div>
+                                <div class="step-mini">
+                                    <div class="step-mini-num">2</div>
+                                    <p>Our AI model analyzes the data</p>
+                                </div>
+                                <div class="step-mini">
+                                    <div class="step-mini-num">3</div>
+                                    <p>Get personalized recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card tips-card">
+                            <div class="sidebar-card-icon tips"><i class="fas fa-lightbulb"></i></div>
+                            <h4>Tips for Accuracy</h4>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Use recent soil test results</li>
+                                <li><i class="fas fa-check-circle"></i> Consider current season's climate</li>
+                                <li><i class="fas fa-check-circle"></i> Choose the correct crop variety</li>
+                                <li><i class="fas fa-check-circle"></i> Select appropriate irrigation</li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-card results-card">
+                            <div class="sidebar-card-icon results"><i class="fas fa-chart-bar"></i></div>
+                            <h4>What You Get</h4>
+                            <ul>
+                                <li><i class="fas fa-arrow-right"></i> Optimal fertilizer amount</li>
+                                <li><i class="fas fa-arrow-right"></i> Key influencing factors</li>
+                                <li><i class="fas fa-arrow-right"></i> Environmental impact data</li>
+                                <li><i class="fas fa-arrow-right"></i> Cost-saving insights</li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-accuracy">
+                            <div class="accuracy-ring">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(76,175,80,0.15)"
+                                        stroke-width="6" />
+                                    <circle cx="50" cy="50" r="42" fill="none" stroke="#4caf50" stroke-width="6"
+                                        stroke-dasharray="252" stroke-dashoffset="3.78" stroke-linecap="round"
+                                        transform="rotate(-90 50 50)" />
+                                </svg>
+                                <div class="accuracy-text">
+                                    <span class="accuracy-num">98.5</span>
+                                    <span class="accuracy-pct">%</span>
+                                </div>
+                            </div>
+                            <p>Model Accuracy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,60 1440,60 L1440,120 L0,120Z" fill="currentColor" />
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h3><i class="fas fa-seedling"></i> CropWise AI</h3>
+                    <p>Revolutionizing agriculture through intelligent fertilizer management. Built with cutting-edge ML
+                        for a sustainable future.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-angle-right"></i> Home</a></li>
+                        <li><a href="{{ url_for('visualization') }}"><i class="fas fa-angle-right"></i> View
+                                Analytics</a></li>
+                        <li><a href="{{ url_for('about') }}"><i class="fas fa-angle-right"></i> Learn More</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> jayakrushna1622@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9392427419</p>
+                    <p><i class="fas fa-map-marker-alt"></i> India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CropWise AI. All rights reserved. Built with <i class="fas fa-heart"
+                        style="color: #e53935;"></i> for sustainable agriculture.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

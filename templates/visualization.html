@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - CropWise AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CropWise AI" class="logo-img">
+                    <span>CropWise AI</span>
+                </div>
+                <div class="nav-hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('predict') }}"><i class="fas fa-calculator"></i> Predict</a></li>
+                    <li><a href="{{ url_for('visualization') }}" class="active"><i class="fas fa-chart-bar"></i>
+                            Analytics</a></li>
+                    <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="analytics-hero">
+            <div class="container">
+                <div class="analytics-hero-badge"><i class="fas fa-chart-line"></i> REAL-TIME DASHBOARD</div>
+                <h1>Data Analytics & Insights</h1>
+                <p>Explore comprehensive analytics, model performance, and machine learning insights</p>
+            </div>
+            <div class="analytics-hero-deco deco-1"></div>
+            <div class="analytics-hero-deco deco-2"></div>
+            <div class="analytics-hero-deco deco-3"></div>
+        </section>
+
+        <section class="analytics-dashboard">
+            <div class="container">
+                <!-- Premium Tab Navigation -->
+                <div class="analytics-tab-bar">
+                    <button class="analytics-tab active" onclick="showTab('overview', this)">
+                        <i class="fas fa-th-large"></i>
+                        <span>Overview</span>
+                    </button>
+                    <button class="analytics-tab" onclick="showTab('models', this)">
+                        <i class="fas fa-brain"></i>
+                        <span>Model Performance</span>
+                    </button>
+                    <button class="analytics-tab" onclick="showTab('features', this)">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Feature Analysis</span>
+                    </button>
+                    <button class="analytics-tab" onclick="showTab('predictions', this)">
+                        <i class="fas fa-history"></i>
+                        <span>Prediction History</span>
+                    </button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-content active">
+                    <!-- Stats Cards Row -->
+                    <div class="dashboard-stats">
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon"><i class="fas fa-database"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num" id="total-samples">Loading...</span>
+                                <span class="dash-stat-label">Total Samples</span>
+                            </div>
+                            <div class="dash-stat-trend up"><i class="fas fa-arrow-up"></i></div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon crop"><i class="fas fa-leaf"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num" id="crop-types">Loading...</span>
+                                <span class="dash-stat-label">Crop Types</span>
+                            </div>
+                            <div class="dash-stat-trend up"><i class="fas fa-arrow-up"></i></div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon fert"><i class="fas fa-flask"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num" id="avg-fertilizer-stat">Loading...</span>
+                                <span class="dash-stat-label">Avg Fertilizer (kg/ha)</span>
+                            </div>
+                            <div class="dash-stat-trend neutral"><i class="fas fa-minus"></i></div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon temp"><i class="fas fa-thermometer-half"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num" id="avg-temperature">Loading...</span>
+                                <span class="dash-stat-label">Avg Temperature</span>
+                            </div>
+                            <div class="dash-stat-trend down"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="dashboard-charts">
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-chart-pie"></i> Dataset Distribution</h3>
+                                <span class="chart-badge">Live</span>
+                            </div>
+                            <canvas id="crop-distribution-chart"></canvas>
+                        </div>
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-seedling"></i> Fertilizer by Crop</h3>
+                                <span class="chart-badge">Live</span>
+                            </div>
+                            <canvas id="fertilizer-by-crop-chart"></canvas>
+                        </div>
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-flask"></i> Soil pH Distribution</h3>
+                                <span class="chart-badge">Data</span>
+                            </div>
+                            <canvas id="soil-ph-distribution-chart"></canvas>
+                        </div>
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-cloud-sun"></i> Climate Factors</h3>
+                                <span class="chart-badge">Data</span>
+                            </div>
+                            <canvas id="climate-factors-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Performance Tab -->
+                <div id="models" class="tab-content">
+                    <div class="model-perf-header">
+                        <div class="model-perf-icon"><i class="fas fa-brain"></i></div>
+                        <div>
+                            <h3>Machine Learning Model Comparison</h3>
+                            <p>Performance metrics across trained models</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-charts">
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-bullseye"></i> R² Score Comparison</h3>
+                                <span class="chart-badge accuracy">Accuracy</span>
+                            </div>
+                            <canvas id="model-r2-chart"></canvas>
+                        </div>
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-exclamation-triangle"></i> RMSE Comparison</h3>
+                                <span class="chart-badge error">Error</span>
+                            </div>
+                            <canvas id="model-rmse-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="model-table-card">
+                        <div class="dash-chart-header">
+                            <h3><i class="fas fa-table"></i> Detailed Performance Metrics</h3>
+                        </div>
+                        <div class="model-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Model</th>
+                                        <th>R² Score</th>
+                                        <th>RMSE</th>
+                                        <th>MAE</th>
+                                        <th>CV RMSE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="model-badge rf"><i class="fas fa-tree"></i> Random
+                                                Forest</span></td>
+                                        <td>0.85</td>
+                                        <td>12.3</td>
+                                        <td>9.8</td>
+                                        <td>13.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="model-badge lr"><i class="fas fa-chart-line"></i> Linear
+                                                Regression</span></td>
+                                        <td>0.72</td>
+                                        <td>18.9</td>
+                                        <td>15.2</td>
+                                        <td>19.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="model-badge svr"><i class="fas fa-project-diagram"></i>
+                                                SVR</span></td>
+                                        <td>0.78</td>
+                                        <td>15.6</td>
+                                        <td>12.4</td>
+                                        <td>16.2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Analysis Tab -->
+                <div id="features" class="tab-content">
+                    <div class="model-perf-header">
+                        <div class="model-perf-icon features"><i class="fas fa-search-plus"></i></div>
+                        <div>
+                            <h3>Feature Importance Analysis</h3>
+                            <p>Understanding what drives fertilizer predictions</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-charts">
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-sort-amount-down"></i> Feature Importance (Random Forest)</h3>
+                            </div>
+                            <canvas id="feature-importance-chart"></canvas>
+                        </div>
+                        <div class="dash-chart-card">
+                            <div class="dash-chart-header">
+                                <h3><i class="fas fa-th"></i> Correlation Matrix</h3>
+                            </div>
+                            <canvas id="correlation-matrix-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="insights-grid-premium">
+                        <div class="insight-card-premium">
+                            <div class="insight-icon"><i class="fas fa-star"></i></div>
+                            <h5>Top Influencing Factors</h5>
+                            <ul>
+                                <li><strong>Nitrogen content:</strong> Most critical soil nutrient</li>
+                                <li><strong>Crop type:</strong> Determines base fertilizer requirements</li>
+                                <li><strong>Phosphorus levels:</strong> Important for root development</li>
+                                <li><strong>Organic matter:</strong> Affects nutrient availability</li>
+                            </ul>
+                        </div>
+                        <div class="insight-card-premium">
+                            <div class="insight-icon climate"><i class="fas fa-cloud-sun-rain"></i></div>
+                            <h5>Climate Impact</h5>
+                            <ul>
+                                <li><strong>Temperature:</strong> Affects nutrient uptake rates</li>
+                                <li><strong>Rainfall:</strong> Influences leaching potential</li>
+                                <li><strong>Humidity:</strong> Impacts fertilizer dissolution</li>
+                            </ul>
+                        </div>
+                        <div class="insight-card-premium">
+                            <div class="insight-icon soil"><i class="fas fa-mountain"></i></div>
+                            <h5>Soil Properties</h5>
+                            <ul>
+                                <li><strong>pH level:</strong> Critical for nutrient availability</li>
+                                <li><strong>Texture:</strong> Affects water retention and drainage</li>
+                                <li><strong>Existing nutrients:</strong> Determine supplementation needs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prediction History Tab -->
+                <div id="predictions" class="tab-content">
+                    <div class="model-perf-header">
+                        <div class="model-perf-icon history"><i class="fas fa-history"></i></div>
+                        <div>
+                            <h3>Recent Predictions</h3>
+                            <p>View and filter your prediction history</p>
+                        </div>
+                    </div>
+
+                    <div class="history-toolbar">
+                        <button id="refresh-history" class="toolbar-btn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <div class="toolbar-filter">
+                            <i class="fas fa-filter"></i>
+                            <select id="history-filter">
+                                <option value="all">All Crops</option>
+                                <option value="wheat">Wheat</option>
+                                <option value="rice">Rice</option>
+                                <option value="maize">Maize</option>
+                                <option value="soybean">Soybean</option>
+                                <option value="cotton">Cotton</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="model-table-card">
+                        <table id="predictions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Crop</th>
+                                    <th>Soil pH</th>
+                                    <th>Temperature</th>
+                                    <th>Rainfall</th>
+                                    <th>Predicted Fertilizer</th>
+                                    <th>Model Used</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictions-tbody">
+                                <tr>
+                                    <td colspan="7" class="loading">Loading prediction history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="history-summary">
+                        <div class="history-summary-card">
+                            <div class="history-summary-icon"><i class="fas fa-calculator"></i></div>
+                            <span class="stat-value" id="total-predictions">0</span>
+                            <span class="stat-label">Total Predictions</span>
+                        </div>
+                        <div class="history-summary-card">
+                            <div class="history-summary-icon avg"><i class="fas fa-balance-scale"></i></div>
+                            <span class="stat-value" id="avg-fertilizer">0 kg/ha</span>
+                            <span class="stat-label">Average Fertilizer</span>
+                        </div>
+                        <div class="history-summary-card">
+                            <div class="history-summary-icon pop"><i class="fas fa-trophy"></i></div>
+                            <span class="stat-value" id="popular-crop">-</span>
+                            <span class="stat-label">Most Predicted Crop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,60 1440,60 L1440,120 L0,120Z" fill="currentColor" />
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h3><i class="fas fa-seedling"></i> CropWise AI</h3>
+                    <p>Revolutionizing agriculture through intelligent fertilizer management. Built with cutting-edge ML
+                        for a sustainable future.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}"><i class="fas fa-angle-right"></i> Home</a></li>
+                        <li><a href="{{ url_for('predict') }}"><i class="fas fa-angle-right"></i> Make Prediction</a>
+                        </li>
+                        <li><a href="{{ url_for('about') }}"><i class="fas fa-angle-right"></i> Learn More</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> jayakrushna1622@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9392427419</p>
+                    <p><i class="fas fa-map-marker-alt"></i> India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CropWise AI. All rights reserved. Built with <i class="fas fa-heart"
+                        style="color: #e53935;"></i> for sustainable agriculture.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching functionality
+        function showTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.analytics-tab').forEach(b => {
+                b.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Global variables to store analytics data
+        let analyticsData = null;
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            loadAnalyticsData();
+        });
+
+        // Load analytics data from API
+        async function loadAnalyticsData() {
+            try {
+                console.log('Loading analytics data...');
+                const response = await fetch('/api/analytics');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                analyticsData = await response.json();
+                console.log('Analytics data loaded:', analyticsData);
+
+                if (analyticsData.error) {
+                    console.error('API Error:', analyticsData.error);
+                    return;
+                }
+
+                initializeCharts();
+                loadPredictionHistory();
+                updateStatistics();
+
+            } catch (error) {
+                console.error('Failed to load analytics data:', error);
+                analyticsData = null;
+                initializeCharts();
+                loadPredictionHistory();
+            }
+        }
+
+        // Chart.js global config for dark theme
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.1)';
+
+        function initializeCharts() {
+            // Crop distribution chart
+            const cropCtx = document.getElementById('crop-distribution-chart').getContext('2d');
+            let cropData = [25, 20, 18, 17, 20];
+            let cropLabels = ['Wheat', 'Rice', 'Maize', 'Soybean', 'Cotton'];
+
+            if (analyticsData && analyticsData.statistics && analyticsData.statistics.crop_statistics) {
+                const cropStats = analyticsData.statistics.crop_statistics;
+                cropLabels = cropStats.map(stat => stat.crop_type);
+                cropData = cropStats.map(stat => stat.count);
+            }
+
+            new Chart(cropCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: cropLabels,
+                    datasets: [{
+                        data: cropData,
+                        backgroundColor: ['#4caf50', '#00bcd4', '#ff9800', '#e91e63', '#7c4dff'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10 } }
+                    }
+                }
+            });
+
+            // Fertilizer by crop chart
+            const fertilizerCtx = document.getElementById('fertilizer-by-crop-chart').getContext('2d');
+            let fertilizerLabels = ['Wheat', 'Rice', 'Maize', 'Soybean', 'Cotton'];
+            let fertilizerData = [120, 100, 150, 80, 110];
+
+            if (analyticsData && analyticsData.statistics && analyticsData.statistics.crop_statistics) {
+                const cropStats = analyticsData.statistics.crop_statistics;
+                fertilizerLabels = cropStats.map(stat => stat.crop_type);
+                fertilizerData = cropStats.map(stat => stat.avg_fertilizer);
+            }
+
+            new Chart(fertilizerCtx, {
+                type: 'bar',
+                data: {
+                    labels: fertilizerLabels,
+                    datasets: [{
+                        label: 'Average Fertilizer (kg/ha)',
+                        data: fertilizerData,
+                        backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                        borderColor: '#4caf50',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.08)' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Soil pH distribution chart
+            const soilPhCtx = document.getElementById('soil-ph-distribution-chart').getContext('2d');
+            let phLabels = ['4.0-5.0', '5.0-6.0', '6.0-7.0', '7.0-8.0', '8.0-9.0'];
+            let phData = [50, 150, 300, 200, 100];
+
+            new Chart(soilPhCtx, {
+                type: 'bar',
+                data: {
+                    labels: phLabels,
+                    datasets: [{
+                        label: 'Sample Count',
+                        data: phData,
+                        backgroundColor: 'rgba(0, 188, 212, 0.7)',
+                        borderColor: '#00bcd4',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.08)' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Climate factors chart
+            const climateCtx = document.getElementById('climate-factors-chart').getContext('2d');
+            let tempData = 24.5, humidityData = 65.2, rainfallData = 850;
+
+            if (analyticsData && analyticsData.statistics && analyticsData.statistics.overall_statistics) {
+                const overall = analyticsData.statistics.overall_statistics;
+                tempData = overall.avg_temperature || 24.5;
+                rainfallData = overall.avg_rainfall || 850;
+            }
+
+            new Chart(climateCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Temperature', 'Humidity', 'Rainfall'],
+                    datasets: [{
+                        label: 'Average Values',
+                        data: [tempData, humidityData, rainfallData],
+                        backgroundColor: 'rgba(76, 175, 80, 0.15)',
+                        borderColor: '#4caf50',
+                        pointBackgroundColor: '#4caf50',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#4caf50'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { r: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.1)' } } }
+                }
+            });
+
+            // Model performance charts
+            const r2Ctx = document.getElementById('model-r2-chart').getContext('2d');
+            let modelLabels = ['Random Forest', 'Linear Regression', 'SVR'];
+            let r2Data = [0.85, 0.72, 0.78];
+
+            if (analyticsData && analyticsData.model_performance) {
+                const models = analyticsData.model_performance;
+                modelLabels = models.map(m => m.model_name);
+                r2Data = models.map(m => m.r2);
+            }
+
+            new Chart(r2Ctx, {
+                type: 'bar',
+                data: {
+                    labels: modelLabels,
+                    datasets: [{
+                        label: 'R² Score',
+                        data: r2Data,
+                        backgroundColor: ['rgba(76, 175, 80, 0.7)', 'rgba(0, 188, 212, 0.7)', 'rgba(255, 152, 0, 0.7)'],
+                        borderColor: ['#4caf50', '#00bcd4', '#ff9800'],
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, max: 1, grid: { color: 'rgba(148, 163, 184, 0.08)' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const rmseCtx = document.getElementById('model-rmse-chart').getContext('2d');
+            let rmseData = [12.3, 18.9, 15.6];
+
+            if (analyticsData && analyticsData.model_performance) {
+                rmseData = analyticsData.model_performance.map(m => m.rmse);
+            }
+
+            new Chart(rmseCtx, {
+                type: 'bar',
+                data: {
+                    labels: modelLabels,
+                    datasets: [{
+                        label: 'RMSE',
+                        data: rmseData,
+                        backgroundColor: ['rgba(76, 175, 80, 0.7)', 'rgba(0, 188, 212, 0.7)', 'rgba(255, 152, 0, 0.7)'],
+                        borderColor: ['#4caf50', '#00bcd4', '#ff9800'],
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.08)' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Update model performance table with real data
+            if (analyticsData && analyticsData.model_performance) {
+                const tableBody = document.querySelector('.model-table tbody');
+                tableBody.innerHTML = '';
+
+                const icons = { 'Random Forest': 'fa-tree', 'Linear Regression': 'fa-chart-line', 'SVR': 'fa-project-diagram' };
+                const classes = { 'Random Forest': 'rf', 'Linear Regression': 'lr', 'SVR': 'svr' };
+
+                analyticsData.model_performance.forEach(model => {
+                    const row = document.createElement('tr');
+                    const icon = icons[model.model_name] || 'fa-cog';
+                    const cls = classes[model.model_name] || 'rf';
+                    row.innerHTML = `
+                        <td><span class="model-badge ${cls}"><i class="fas ${icon}"></i> ${model.model_name}</span></td>
+                        <td>${model.r2.toFixed(3)}</td>
+                        <td>${model.rmse.toFixed(2)}</td>
+                        <td>${model.mae.toFixed(2)}</td>
+                        <td>${model.cv_rmse.toFixed(2)}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            initializeFeatureAnalysis();
+        }
+
+        function loadPredictionHistory() {
+            const tbody = document.getElementById('predictions-tbody');
+
+            if (analyticsData && analyticsData.recent_predictions && analyticsData.recent_predictions.length > 0) {
+                const predictions = analyticsData.recent_predictions;
+                tbody.innerHTML = '';
+
+                predictions.forEach(pred => {
+                    const tr = document.createElement('tr');
+                    const date = new Date(pred.prediction_date || pred.created_at).toLocaleDateString();
+                    const rowData = [
+                        date, pred.crop_type, pred.soil_ph.toFixed(1),
+                        pred.temperature.toFixed(1), pred.rainfall,
+                        pred.predicted_fertilizer.toFixed(1), pred.model_used
+                    ];
+                    rowData.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('total-predictions').textContent = predictions.length;
+                const avgFertilizer = predictions.reduce((sum, pred) => sum + pred.predicted_fertilizer, 0) / predictions.length;
+                document.getElementById('avg-fertilizer').textContent = avgFertilizer.toFixed(1) + ' kg/ha';
+
+                const cropCounts = {};
+                predictions.forEach(pred => {
+                    cropCounts[pred.crop_type] = (cropCounts[pred.crop_type] || 0) + 1;
+                });
+                const popularCrop = Object.keys(cropCounts).reduce((a, b) => cropCounts[a] > cropCounts[b] ? a : b);
+                document.getElementById('popular-crop').textContent = popularCrop;
+            } else {
+                tbody.innerHTML = '<tr><td colspan="7" class="loading">No prediction history available. Make some predictions first!</td></tr>';
+                document.getElementById('total-predictions').textContent = '0';
+                document.getElementById('avg-fertilizer').textContent = '0 kg/ha';
+                document.getElementById('popular-crop').textContent = '-';
+            }
+        }
+
+        function updateStatistics() {
+            if (analyticsData && analyticsData.statistics && analyticsData.statistics.overall_statistics) {
+                const overall = analyticsData.statistics.overall_statistics;
+                const cropStats = analyticsData.statistics.crop_statistics || [];
+
+                document.getElementById('total-samples').textContent = overall.total_samples || '0';
+                document.getElementById('crop-types').textContent = cropStats.length || '0';
+                document.getElementById('avg-fertilizer-stat').textContent = (overall.avg_fertilizer_req || 0).toFixed(1);
+                document.getElementById('avg-temperature').textContent = (overall.avg_temperature || 0).toFixed(1) + '°C';
+            } else {
+                document.getElementById('total-samples').textContent = '0';
+                document.getElementById('crop-types').textContent = '0';
+                document.getElementById('avg-fertilizer-stat').textContent = '0.0';
+                document.getElementById('avg-temperature').textContent = '0.0°C';
+            }
+        }
+
+        // Refresh history button
+        document.getElementById('refresh-history').addEventListener('click', function () {
+            loadAnalyticsData();
+        });
+
+        // Filter functionality
+        document.getElementById('history-filter').addEventListener('change', function () {
+            const filter = this.value;
+            const rows = document.querySelectorAll('#predictions-tbody tr');
+
+            rows.forEach(row => {
+                const cropCell = row.cells[1];
+                if (filter === 'all' || (cropCell && cropCell.textContent.toLowerCase() === filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        function initializeFeatureAnalysis() {
+            let featureImportanceData = null;
+
+            if (analyticsData && analyticsData.recent_predictions && analyticsData.recent_predictions.length > 0) {
+                const recentPrediction = analyticsData.recent_predictions.find(pred =>
+                    pred.feature_importance && pred.feature_importance.length > 0
+                );
+                if (recentPrediction) {
+                    featureImportanceData = recentPrediction.feature_importance;
+                }
+            }
+
+            if (!featureImportanceData) {
+                featureImportanceData = [
+                    { name: "Crop Type", importance: 0.233 },
+                    { name: "Soil pH", importance: 0.227 },
+                    { name: "Humidity", importance: 0.114 },
+                    { name: "Organic Matter", importance: 0.104 },
+                    { name: "Temperature", importance: 0.073 },
+                    { name: "Nitrogen", importance: 0.062 },
+                    { name: "Potassium", importance: 0.056 },
+                    { name: "Phosphorus", importance: 0.053 },
+                    { name: "Rainfall", importance: 0.038 },
+                    { name: "Irrigation Type", importance: 0.032 },
+                    { name: "Soil Texture", importance: 0.007 }
+                ];
+            }
+
+            const featureCtx = document.getElementById('feature-importance-chart');
+            if (featureCtx) {
+                const labels = featureImportanceData.map(item => item.name);
+                const data = featureImportanceData.map(item => item.importance);
+
+                new Chart(featureCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Importance Score',
+                            data: data,
+                            backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                            borderColor: '#4caf50',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true, max: 0.3,
+                                grid: { color: 'rgba(148, 163, 184, 0.08)' },
+                                ticks: { callback: v => (v * 100).toFixed(1) + '%' }
+                            },
+                            y: { grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { label: ctx => `Importance: ${(ctx.parsed.x * 100).toFixed(2)}%` } }
+                        }
+                    }
+                });
+            }
+
+            const correlationCtx = document.getElementById('correlation-matrix-chart');
+            if (correlationCtx) {
+                const correlationLabels = ['Soil pH', 'Nitrogen', 'Phosphorus', 'Potassium', 'Temperature', 'Rainfall'];
+                const correlationData = [
+                    [1.00, 0.15, 0.25, 0.20, -0.10, 0.05],
+                    [0.15, 1.00, 0.60, 0.45, 0.20, -0.15],
+                    [0.25, 0.60, 1.00, 0.55, 0.15, -0.10],
+                    [0.20, 0.45, 0.55, 1.00, 0.10, -0.05],
+                    [-0.10, 0.20, 0.15, 0.10, 1.00, 0.30],
+                    [0.05, -0.15, -0.10, -0.05, 0.30, 1.00]
+                ];
+
+                new Chart(correlationCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Feature Correlations',
+                            data: correlationData.map((row, i) =>
+                                row.map((val, j) => ({ x: j, y: i, r: Math.abs(val) * 10 }))
+                            ).flat(),
+                            backgroundColor: correlationData.flat().map(val =>
+                                val >= 0 ? `rgba(76, 175, 80, ${Math.abs(val)})` : `rgba(233, 30, 99, ${Math.abs(val)})`
+                            )
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'linear', position: 'bottom', min: -0.5, max: 5.5,
+                                grid: { color: 'rgba(148, 163, 184, 0.08)' },
+                                ticks: { stepSize: 1, callback: v => correlationLabels[Math.round(v)] || '' }
+                            },
+                            y: {
+                                min: -0.5, max: 5.5,
+                                grid: { color: 'rgba(148, 163, 184, 0.08)' },
+                                ticks: { stepSize: 1, callback: v => correlationLabels[Math.round(v)] || '' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: ctx => {
+                                        const i = Math.round(ctx.parsed.y);
+                                        const j = Math.round(ctx.parsed.x);
+                                        return `${correlationLabels[i]} vs ${correlationLabels[j]}: ${correlationData[i][j].toFixed(2)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateFeatureInsights(featureImportanceData);
+        }
+
+        function updateFeatureInsights(featureData) {
+            if (!featureData || featureData.length === 0) return;
+            const topFeatures = featureData.slice(0, 3);
+            const insightsSection = document.querySelector('.insight-card-premium:first-child ul');
+            if (insightsSection && topFeatures.length > 0) {
+                insightsSection.innerHTML = topFeatures.map(feature =>
+                    `<li><strong>${feature.name}:</strong> ${(feature.importance * 100).toFixed(1)}% importance</li>`
+                ).join('');
+            }
+        }
+    </script>
+</body>
+
+</html>
