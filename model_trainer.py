@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -11,13 +12,15 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
+# Base directory for the project
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def load_preprocessed_data():
     """
     Load preprocessed training and test data.
     """
-    # Assuming data/train_data.csv and data/test_data.csv are present
-    train_data = pd.read_csv('data/train_data.csv')
-    test_data = pd.read_csv('data/test_data.csv')
+    train_data = pd.read_csv(os.path.join(BASE_DIR, 'data', 'train_data.csv'))
+    test_data = pd.read_csv(os.path.join(BASE_DIR, 'data', 'test_data.csv'))
 
     X_train = train_data.drop('fertilizer_requirement', axis=1)
     y_train = train_data['fertilizer_requirement']

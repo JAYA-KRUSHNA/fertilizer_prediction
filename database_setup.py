@@ -2,8 +2,14 @@ import sqlite3
 import pandas as pd
 import os
 
+# Base directory for the project
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, 'data', 'agricultural_data.db')
+DEFAULT_CSV_PATH = os.path.join(BASE_DIR, 'data', 'synthetic_agricultural_data.csv')
 
-def create_database(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+
+def create_database(db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Create SQLite database and tables for agricultural data.
 
@@ -80,8 +86,9 @@ def create_database(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_pred
     print(f"Database created successfully at {db_path}")
 
 
-def insert_data_from_csv(csv_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/synthetic_agricultural_data.csv',
-                        db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def insert_data_from_csv(csv_path=None, db_path=None):
+    csv_path = csv_path or DEFAULT_CSV_PATH
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Insert data from CSV file into the database.
 
@@ -104,7 +111,8 @@ def insert_data_from_csv(csv_path='/Users/jayakrushna/Desktop/64b/agri_fertilize
     print(f"Data inserted successfully from {csv_path}")
 
 
-def fetch_all_data(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db', limit=None):
+def fetch_all_data(db_path=None, limit=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Fetch all agricultural data from the database.
 
@@ -127,7 +135,8 @@ def fetch_all_data(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_predi
     return df
 
 
-def fetch_data_by_crop(crop_type, db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def fetch_data_by_crop(crop_type, db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Fetch data for a specific crop type.
 
@@ -147,7 +156,8 @@ def fetch_data_by_crop(crop_type, db_path='/Users/jayakrushna/Desktop/64b/agri_f
     return df
 
 
-def get_statistics(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def get_statistics(db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Get basic statistics from the agricultural data.
 
@@ -188,7 +198,8 @@ def get_statistics(db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_predi
 
 
 
-def insert_prediction(prediction_data, db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def insert_prediction(prediction_data, db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Insert a prediction record into the database.
 
@@ -232,7 +243,8 @@ def insert_prediction(prediction_data, db_path='/Users/jayakrushna/Desktop/64b/a
     conn.close()
 
 
-def insert_model_performance(performance_data, db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def insert_model_performance(performance_data, db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Insert model performance metrics into the database.
 
@@ -261,7 +273,8 @@ def insert_model_performance(performance_data, db_path='/Users/jayakrushna/Deskt
 
 
 
-def get_recent_predictions(limit=10, db_path='/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/agricultural_data.db'):
+def get_recent_predictions(limit=10, db_path=None):
+    db_path = db_path or DEFAULT_DB_PATH
     """
     Get recent predictions from the database.
 
@@ -297,7 +310,7 @@ if __name__ == "__main__":
 
 
     # Insert data from CSV (assuming CSV exists)
-    csv_path = '/Users/jayakrushna/Desktop/64b/agri_fertilizer_prediction/data/synthetic_agricultural_data.csv'
+    csv_path = DEFAULT_CSV_PATH
     if os.path.exists(csv_path):
         insert_data_from_csv()
         print("Data inserted into database")
